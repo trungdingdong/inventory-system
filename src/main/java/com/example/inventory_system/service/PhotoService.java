@@ -27,7 +27,7 @@ public class PhotoService {
     @Autowired
     private S3Service s3Service;
 
-    public Photo uploadPhoto(Long userId, Long albumId, MultipartFile file){
+    public Photo uploadPhoto(Long userId, Long albumId, MultipartFile file) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Can't Find User"));
 
         String s3Url = s3Service.uploadFile(file);
@@ -38,20 +38,17 @@ public class PhotoService {
         photo.setUploadedAt(LocalDateTime.now());
         photo.setUser(user);
 
-        if (albumId != null){
+        if (albumId != null) {
             Album album = albumRepository.findById(albumId)
-                    .orElseThrow(()->new RuntimeException("Can't Find Album"));
+                    .orElseThrow(() -> new RuntimeException("Can't Find Album"));
 
             photo.setAlbum(album);
         }
         return photoRepository.save(photo);
     }
 
-    public List<Photo> getPersonalPhoto(Long userId){
+    public List<Photo> getPersonalPhoto(Long userId) {
         return photoRepository.findByUserId(userId);
     }
 
-    public List<Photo> getAllPhotos(){
-        return photoRepository.findAll();
-    }
 }

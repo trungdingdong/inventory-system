@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,12 +29,8 @@ public class PhotoController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Photo>> getPhotosByUser(@PathVariable Long userId){
+    public ResponseEntity<List<Photo>> getPhotosByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(photoService.getPersonalPhoto(userId));
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<Photo>> getAllPhotos(){
-        return ResponseEntity.ok(photoService.getAllPhotos());
-    }
 }

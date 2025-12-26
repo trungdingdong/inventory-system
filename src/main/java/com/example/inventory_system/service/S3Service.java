@@ -16,17 +16,19 @@ import java.util.UUID;
 
 @Service
 public class S3Service {
+    @Value("${aws.s3.endpoint}")
+    private String endpoint;
 
-    @Value("${aws.accessKeyId}")
+    @Value("${aws.accessKey}")
     private String accessKey;
 
-    @Value("${aws.secretAccessKey}")
+    @Value("${aws.secretKey}")
     private String secretKey;
 
     @Value("${aws.region}")
     private String region;
 
-    @Value("${aws.s3.bucketName}")
+    @Value("${aws.s3.bucket}")
     private String bucketName;
 
     private S3Client s3Client;
@@ -35,6 +37,11 @@ public class S3Service {
     private void initializeAWS() {
         this.s3Client = S3Client.builder()
                 .region(Region.of(region))
+                .endpointOverride(java.net.URI.create(endpoint))
+                .serviceConfiguration(software.amazon.awssdk.services.s3.S3Configuration.builder()
+                        .chunkedEncodingEnabled(false) //TODO: tắt đi nếu chạy s3 thật
+                        .pathStyleAccessEnabled(true)
+                        .build())
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
     }

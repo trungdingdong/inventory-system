@@ -21,16 +21,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Tắt CSRF (Rất quan trọng khi test bằng Postman)
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // 2. Cấu hình quyền truy cập
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép truy cập tự do vào 2 đường dẫn này
-                        .requestMatchers("/api/user/register", "/api/user/login").permitAll()
-
-                        // Các đường dẫn khác bắt buộc phải đăng nhập mới được vào
-                        .anyRequest().authenticated()
+                        // Cho phép truy cập tự do vào tất cả các đường dẫn
+                        .anyRequest().permitAll()
                 );
 
         return http.build();

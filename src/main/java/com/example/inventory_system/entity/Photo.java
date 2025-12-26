@@ -32,7 +32,7 @@ public class Photo {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "album_id", nullable = false)
+    @JoinColumn(name = "album_id", nullable = true)
     private Album album;
 
 
